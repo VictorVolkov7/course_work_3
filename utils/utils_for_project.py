@@ -57,7 +57,7 @@ def get_last_five_transactions(sorted_transaction_list: list[dict]) -> list[dict
     return sorted_transaction_list[:5]
 
 
-def hide_requisites_from(last_transaction: str) -> str:
+def hide_requisites_from(last_transaction) -> str:
     """
     принимает реквизиты(получателя/отправителя),
     сплитит его на слова,
