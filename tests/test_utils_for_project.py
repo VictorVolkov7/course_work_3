@@ -26,3 +26,4 @@ def test_hide_requisites_from(tests_data):
     assert hide_requisites_from("MasterCard 1435442169918409") == 'MasterCard 1435 44** **** 8409'
     assert hide_requisites_from(tests_data[0]['from']) == 'Maestro 1596 83** **** 5199'
     assert hide_requisites_from(tests_data[0]['to']) == 'Счет **9589'
+    assert hide_requisites_from(None) == 'Пополнение'
