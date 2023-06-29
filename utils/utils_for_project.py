@@ -22,9 +22,7 @@ def get_list_processing(transactions_list: list[dict]) -> list[dict]:
     """
     executed_list = []
     for transaction in transactions_list:
-        if 'from' not in transaction:
-            continue
-        elif 'state' not in transaction:
+        if 'state' not in transaction:
             continue
         elif transaction['state'] == 'EXECUTED':
             executed_list.append(transaction)
@@ -66,20 +64,16 @@ def hide_requisites_from(last_transaction: str) -> str:
     далее идет проверка по первому слову для определения карты или счета
     возвращает скрытые реквизиты
     """
-    first_part_word: str = last_transaction.split(' ')[0]
-    second_part_word: str = last_transaction.split(' ')[1]
-    hide_requisites = ''
-    if first_part_word == 'Счет':
-        hide_requisites = f'{first_part_word} **{second_part_word[-4:]}'
-    elif first_part_word in ('Maestro', 'МИР', 'MasterCard'):
-        first_four_elements: str = second_part_word[:4]
-        second_two_elements: str = second_part_word[4:6]
-        last_four_elements: str = second_part_word[-4:]
-        hide_requisites = f'{first_part_word} {first_four_elements} {second_two_elements}** **** {last_four_elements}'
-    elif first_part_word == 'Visa':
-        payment_system: str = f'{first_part_word} {second_part_word}'
-        first_four_elements: str = last_transaction.split(' ')[2][:4]
-        second_two_elements: str = last_transaction.split(' ')[2][4:6]
-        last_four_elements: str = last_transaction.split(' ')[2][-4:]
+    if last_transaction is None:
+        return 'Пополнение'
+
+    requisites: str = last_transaction.split(' ')[-1]
+    payment_system: str = ' '.join(last_transaction.split(' ')[:-1])
+    if payment_system == 'Счет':
+        hide_requisites = f'{payment_system} **{requisites[-4:]}'
+    else:
+        first_four_elements: str = requisites[:4]
+        second_two_elements: str = requisites[4:6]
+        last_four_elements: str = requisites[-4:]
         hide_requisites = f'{payment_system} {first_four_elements} {second_two_elements}** **** {last_four_elements}'
     return hide_requisites
